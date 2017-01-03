@@ -13,9 +13,36 @@ public class Channel implements SimulatorInterface, InterfacePrintControlRegiste
     private Simulator simulator;
 
     private SubChannel[] subChannels;
+    private CSDevice[] csDevices;
 
     public Channel(Simulator simulator){
         this.simulator = simulator;
+        this.simulator.register(this);
+    }
+
+    public int getSumSubChannels(){
+        return this.subChannels.length;
+    }
+
+    public void attach(CSDevice csDevice){
+        if (this.csDevices == null){
+            this.csDevices = new CSDevice[1];
+            this.csDevices[0] = csDevice;
+            return;
+        }
+        else{
+            for (int i = 0 ; i < this.csDevices.length ; i++){
+                if (this.csDevices[i] == csDevice){
+                    return;
+                }
+            }
+            CSDevice[] csDevices = new CSDevice[this.csDevices.length+1];
+            System.arraycopy(this.csDevices, 0, csDevices, 0, this.csDevices.length);
+            csDevices[this.csDevices.length] = csDevice;
+            this.csDevices = csDevices;
+            return;
+        }
+
     }
 
     public void setNumOfSubChannels(int numOfSubChannels){
@@ -29,6 +56,10 @@ public class Channel implements SimulatorInterface, InterfacePrintControlRegiste
         for (int i = 0 ; i < numOfSubChannels ; i++){
             this.subChannels[i] = new SubChannel(this.simulator, this, this.printControl);
         }
+    }
+
+    public CSDevice[] getCsDevices(){
+        return this.csDevices;
     }
 
     public SubChannel getSubChannel(int index){

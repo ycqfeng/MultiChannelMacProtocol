@@ -18,6 +18,8 @@ public class SubChannel implements InterfacePrintControlRegisterInstance {
     private int numTrans;
 
     private Channel channel;
+    private static int indexBase = 0;
+    private int index;
 
     public SubChannel(Simulator simulator, Channel channel, PrintControl printControl){
         this.simulator = simulator;
@@ -26,6 +28,7 @@ public class SubChannel implements InterfacePrintControlRegisterInstance {
         printControl.register(this);
         this.state = StateSubChannel.IDLE;
         this.numTrans = 0;
+        this.index = SubChannel.indexBase++;
     }
 
     public void send(Packet packet, double interTime){
@@ -40,6 +43,10 @@ public class SubChannel implements InterfacePrintControlRegisterInstance {
         }
     }
 
+    public int getIndex(){
+        return index;
+    }
+
     public void send(Packet packet){
         this.send(packet,0);
     }
@@ -48,10 +55,64 @@ public class SubChannel implements InterfacePrintControlRegisterInstance {
         return this.numTrans;
     }
 
+    private void turnToIDLE(){
+        this.state = StateSubChannel.IDLE;
+
+        SubChannelTurnToIDLE turnToIDLE;
+        Event event;
+        CSDevice[] csDevices = channel.getCsDevices();
+        for (int i = 0 ; i < csDevices.length ; i++){
+            if (csDevices[i].isAttachToSubChannel(this.index)){
+                turnToIDLE = new SubChannelTurnToIDLE(this);
+                turnToIDLE.setCsDevice(csDevices[i]);
+                event = new Event();
+                event.setEventInterface(turnToIDLE);
+                event.setInterTime(0);
+                this.simulator.addEvent(event);
+            }
+        }
+    }
+
+    private void turnToTRANSMIT(){
+        this.state = StateSubChannel.TRANSMITTING;
+
+        SubChannelTurnToTRANSMIT turnToTRANSMIT;
+        Event event;
+        CSDevice[] csDevices = channel.getCsDevices();
+        for (int i = 0 ; i < csDevices.length ; i++){
+            if (csDevices[i].isAttachToSubChannel(this.index)){
+                turnToTRANSMIT = new SubChannelTurnToTRANSMIT(this);
+                turnToTRANSMIT.setCsDevice(csDevices[i]);
+                event = new Event();
+                event.setEventInterface(turnToTRANSMIT);
+                event.setInterTime(0);
+                this.simulator.addEvent(event);
+            }
+        }
+    }
+
+    private void turnToPROPAGATION(){
+        this.state = StateSubChannel.PROPAGATION;
+
+        SubChannelTurnToPROPAGATION turnToPROPAGATION;
+        Event event;
+        CSDevice[] csDevices = channel.getCsDevices();
+        for (int i = 0 ; i < csDevices.length ; i++){
+            if (csDevices[i].isAttachToSubChannel(this.index)){
+                turnToPROPAGATION = new SubChannelTurnToPROPAGATION(this);
+                turnToPROPAGATION.setCsDevice(csDevices[i]);
+                event = new Event();
+                event.setEventInterface(turnToPROPAGATION);
+                event.setInterTime(0);
+                this.simulator.addEvent(event);
+            }
+        }
+    }
+
     public void turnToState(StateSubChannel state){
         if (this.state == StateSubChannel.IDLE){
             if (state == StateSubChannel.TRANSMITTING){
-                this.state = state;
+                this.turnToTRANSMIT();
                 this.numTrans = 1;
                 return;
             }
@@ -60,7 +121,7 @@ public class SubChannel implements InterfacePrintControlRegisterInstance {
             if (state == StateSubChannel.IDLE){
                 this.numTrans -= 1;
                 if (this.numTrans == 0){
-                    this.state = StateSubChannel.IDLE;
+                    this.turnToIDLE();
                 }
                 return;
             }
@@ -97,6 +158,60 @@ public class SubChannel implements InterfacePrintControlRegisterInstance {
 
     public double getBps(){
         return bps;
+    }
+}
+
+class SubChannelTurnToPROPAGATION implements EventInterface{
+    SubChannel subChannel;
+    CSDevice csDevice;
+
+    public SubChannelTurnToPROPAGATION(SubChannel subChannel){
+        this.subChannel = subChannel;
+    }
+
+    public void setCsDevice(CSDevice csDevice){
+        this.csDevice = csDevice;
+    }
+
+    @Override
+    public void run(){
+        this.csDevice.subChannelStateToPropagation(this.subChannel);
+    }
+}
+
+class SubChannelTurnToTRANSMIT implements EventInterface{
+    SubChannel subChannel;
+    CSDevice csDevice;
+
+    public SubChannelTurnToTRANSMIT(SubChannel subChannel){
+        this.subChannel = subChannel;
+    }
+
+    public void setCsDevice(CSDevice csDevice){
+        this.csDevice = csDevice;
+    }
+
+    @Override
+    public void run(){
+        this.csDevice.subChannelStateToTransmit(this.subChannel);
+    }
+}
+
+class SubChannelTurnToIDLE implements EventInterface{
+    SubChannel subChannel;
+    CSDevice csDevice;
+
+    public SubChannelTurnToIDLE(SubChannel subChannel){
+        this.subChannel = subChannel;
+    }
+
+    public void setCsDevice(CSDevice csDevice){
+        this.csDevice = csDevice;
+    }
+
+    @Override
+    public void run(){
+        this.csDevice.subChannelStateToIdle(this.subChannel);
     }
 }
 
