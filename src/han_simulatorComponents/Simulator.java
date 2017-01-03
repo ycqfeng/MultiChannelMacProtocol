@@ -50,26 +50,6 @@ public class Simulator implements InterfacePrintControlRegisterInstance {
             curEvent.getEventInterface().run();
             this.addToPassQueueTail(curEvent);
         }
-
-        /*double percent;
-        int ipercent = 0;
-        this.nextEvent = this.getAndMoveEventQueueHead();
-        while (!this.isFinish(this.nextEvent)){
-            this.curTime = this.nextEvent.getTimeExecute();
-            if (this.stopTime > 0){
-                percent = 100*this.curTime/this.stopTime;
-                if (percent-ipercent>1){
-                    System.out.println(percent+"%");
-                    ipercent++;
-                }
-            }
-            this.nextEvent.getEventInterface().run();
-            this.addToPassQueueTail(this.nextEvent);
-            this.nextEvent = this.getAndMoveEventQueueHead();
-            if (this.nextEvent == null){
-                break;
-            }
-        }*/
     }
     //开始准备并执行事件
     public void start(){
