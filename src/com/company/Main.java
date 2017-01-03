@@ -21,9 +21,22 @@ public class Main {
         channel.setNumOfSubChannels(1);
         channel.setALLBps(1000000);
 
+        Packet packet = new Packet();
+        packet.setLengthBits(1000);
+        channel.getSubChannel(0).send(packet,1);
+
+        packet = new Packet();
+        packet.setLengthBits(1000);
+        channel.getSubChannel(0).send(packet,2);
+
+        packet = new Packet();
+        packet.setLengthBits(1000);
+        channel.getSubChannel(0).send(packet,2.0001);
+
         simulator.setStopTime(100);
 
         printControl.setPrintLogicInfoState(channel, true);
+        printControl.setPrintLogicInfoState(channel.getSubChannel(0), true);
 
         simulator.start();
         System.out.println("Hello,world.");

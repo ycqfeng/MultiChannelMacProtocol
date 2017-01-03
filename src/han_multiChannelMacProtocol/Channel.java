@@ -35,6 +35,15 @@ public class Channel implements SimulatorInterface, InterfacePrintControlRegiste
         return this.subChannels[index];
     }
 
+    public void send(Packet packet, int index, double interTime){
+        SubChannel subChannel = this.getSubChannel(index);
+        subChannel.send(packet,interTime);
+    }
+
+    public void send(Packet packet, int index){
+        this.getSubChannel(index).send(packet, 0);
+    }
+
     public void setALLBps(double bps){
         if (this.subChannels == null){
             this.printControl.printlnErrorInfo(this, "信道数为0");
@@ -44,8 +53,6 @@ public class Channel implements SimulatorInterface, InterfacePrintControlRegiste
             this.subChannels[i].setBps(bps);
         }
     }
-
-
 
     @Override
     public void simulatorStart() {
