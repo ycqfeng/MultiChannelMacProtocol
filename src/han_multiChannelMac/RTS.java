@@ -5,9 +5,11 @@ package han_multiChannelMac;
  */
 public class RTS extends Packet {
     static int length = 20*8;
-    static int kind = 1;
 
-    public static int getLength() {
+    public RTS(){
+        super.setType(PacketType.RTS);
+    }
+    public static int getLengthBits() {
         return length;
     }
 }

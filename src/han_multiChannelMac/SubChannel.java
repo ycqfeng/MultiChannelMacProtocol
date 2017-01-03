@@ -1,11 +1,14 @@
 package han_multiChannelMac;
 
+import han_simulatorComponents.EventInterface;
+
 /**
  * Created by ycqfeng on 2017/1/2.
  */
 public class SubChannel {
     Channel channel;
     double bandwidth;//MHz
+    double bps;
     IF_SubchannelNotify[] notifies;
     StateSubChannel stateSubChannel = StateSubChannel.IDLE;
 
@@ -20,6 +23,11 @@ public class SubChannel {
         this.transmitEnd = new SubChannelTransmitEnd(this);
         this.propagationBegin = new SubChannelPropagationBegin(this);
         this.propagationEnd = new SubChannelPropagationEnd(this);
+    }
+
+    public double getTimeTransmit(int bits){
+        double s = (double) bits;
+        return s/bps;
     }
 
 
@@ -62,30 +70,50 @@ public class SubChannel {
 
 }
 
-class SubChannelTransmitBegin{
+class SubChannelTransmitBegin implements EventInterface{
     SubChannel subChannel;
     public SubChannelTransmitBegin(SubChannel subChannel){
         this.subChannel = subChannel;
     }
+
+    @Override
+    public void run() {
+
+    }
 }
 
-class SubChannelTransmitEnd{
+class SubChannelTransmitEnd implements EventInterface{
     SubChannel subChannel;
     public SubChannelTransmitEnd(SubChannel subChannel){
         this.subChannel = subChannel;
     }
+
+    @Override
+    public void run() {
+
+    }
 }
 
-class SubChannelPropagationBegin{
+class SubChannelPropagationBegin implements EventInterface{
     SubChannel subChannel;
     public SubChannelPropagationBegin(SubChannel subChannel){
         this.subChannel = subChannel;
     }
+
+    @Override
+    public void run() {
+
+    }
 }
 
-class SubChannelPropagationEnd{
+class SubChannelPropagationEnd implements EventInterface{
     SubChannel subChannel;
     public SubChannelPropagationEnd(SubChannel subChannel){
         this.subChannel = subChannel;
+    }
+
+    @Override
+    public void run() {
+
     }
 }

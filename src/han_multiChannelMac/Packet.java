@@ -9,12 +9,13 @@ package han_multiChannelMac;
  * 1 : RTS
  */
 public abstract class Packet {
-    private int kind;
-    public void setKind(int kind){
-        this.kind = kind;
+    private PacketType type;
+
+    public PacketType getType(){
+        return this.type;
     }
 
-    public int getKind(){
-        return this.kind;
+    public void setType(PacketType type){
+        this.type = type;
     }
 }
