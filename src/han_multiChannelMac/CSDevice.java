@@ -11,6 +11,10 @@ public class CSDevice implements IF_SubchannelNotify {
         return channel.getSubChannel(this.indexControlChannel);
     }
 
+    public void setIndexControlChannel(int indexControlChannel){
+        this.indexControlChannel = indexControlChannel;
+    }
+
     public Channel getChannel() {
         return channel;
     }
