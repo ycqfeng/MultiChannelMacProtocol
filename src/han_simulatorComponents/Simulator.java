@@ -1,12 +1,9 @@
 package han_simulatorComponents;
 
-import printControlComponents.InterfacePrintControlRegisterInstance;
-import printControlComponents.PrintControl;
-
 /**
  * Created by ycqfeng on 2016/12/4.
  */
-public class Simulator implements InterfacePrintControlRegisterInstance {
+public class Simulator {
     //时间
     double curTime;
     double stopTime;

@@ -1,32 +1,35 @@
 package printControlComponents;
 
 /**
- * Created by ycqfeng on 2016/12/4.
+ * Created by ycqfeng on 2017/1/4.
  */
-public class PrintControlNode {
-    //实例集合
-    private InterfacePrintControlRegisterInstance instance;
-    //打印信息
+public class HPNode {
+    private IF_HPrint instance;
+
     private boolean isPrintErrorInformation;
     private boolean isPrintLogicInformation;
     private boolean isPrintDebugInformation;
     private boolean isPrintResultInformation;
-    //构造函数
-    public PrintControlNode(){
+
+    public HPNode(IF_HPrint instance){
+        this.instance = instance;
+        this.isPrintDebugInformation = true;
         this.isPrintErrorInformation = true;
-        this.isPrintLogicInformation = false;
-        this.isPrintDebugInformation = false;
-        this.isPrintResultInformation = false;
+        this.isPrintLogicInformation = true;
+        this.isPrintResultInformation = true;
     }
-    //设置、获取实例
-    public InterfacePrintControlRegisterInstance getInstances() {
+
+    public IF_HPrint getInstance() {
         return instance;
     }
 
-    public void setInstances(InterfacePrintControlRegisterInstance instance) {
-        this.instance = instance;
+    public void setALL(boolean bool){
+        isPrintResultInformation = bool;
+        isPrintLogicInformation = bool;
+        isPrintErrorInformation = bool;
+        isPrintDebugInformation = bool;
     }
-    //控制打印信息
+
     public boolean isPrintErrorInformation() {
         return isPrintErrorInformation;
     }

@@ -3,13 +3,11 @@ package han_multiChannelMacProtocol;
 import han_simulatorComponents.Event;
 import han_simulatorComponents.EventInterface;
 import han_simulatorComponents.Simulator;
-import printControlComponents.InterfacePrintControlRegisterInstance;
-import printControlComponents.PrintControl;
 
 /**
  * Created by ycqfeng on 2017/1/3.
  */
-public class SubChannel implements InterfacePrintControlRegisterInstance {
+public class SubChannel {
     private Simulator simulator;
     private PrintControl printControl;
 

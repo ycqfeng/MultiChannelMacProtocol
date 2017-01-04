@@ -5,7 +5,6 @@ import han_multiChannelMacProtocol.CSDevice;
 import han_multiChannelMacProtocol.Channel;
 import han_multiChannelMacProtocol.Packet;
 import han_simulatorComponents.Simulator;
-import printControlComponents.PrintControl;
 
 public class Main {
 
