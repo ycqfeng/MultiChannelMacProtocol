@@ -12,7 +12,9 @@ public class Channel implements SimulatorInterface, InterfacePrintControlRegiste
     private PrintControl printControl;
     private Simulator simulator;
 
+    //子信道
     private SubChannel[] subChannels;
+    //设备列表
     private CSDevice[] csDevices;
 
     public Channel(Simulator simulator){

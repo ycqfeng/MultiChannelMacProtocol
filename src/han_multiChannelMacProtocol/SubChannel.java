@@ -13,13 +13,13 @@ public class SubChannel implements InterfacePrintControlRegisterInstance {
     private Simulator simulator;
     private PrintControl printControl;
 
-    private double bps;
-    private StateSubChannel state;
-    private int numTrans;
+    private double bps;//速率
+    private StateSubChannel state;//信道状态
+    private int numTrans;//正在传输的设备数目
 
-    private Channel channel;
+    private Channel channel;//信道
     private static int indexBase = 0;
-    private int index;
+    private int index;//信道编号
 
     public SubChannel(Simulator simulator, Channel channel, PrintControl printControl){
         this.simulator = simulator;
